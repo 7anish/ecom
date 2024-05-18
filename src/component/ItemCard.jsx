@@ -3,6 +3,7 @@ import { Image, Card, CardHeader, CardBody, CardFooter, Stack, Text, Button, But
 import { useDispatch } from 'react-redux'
 import cartitem from '../Store/Room'
 import { addtocart } from '../Store/Room'
+import toast, { Toaster } from 'react-hot-toast'
 
 
 
@@ -11,13 +12,13 @@ import { addtocart } from '../Store/Room'
 const ItemCard = ({ name, desc, price, img, id }) => {
     const dispatch = useDispatch();
 
-    const addnewitem =(payload)=>{
+    const addnewitem = (payload) => {
         dispatch(addtocart(payload));
     }
     return (
         <Card shadow={'lg'} transition={'all .3s'} _hover={{
-            shadow:'2xl',
-            border:'3px solid #4299E1'
+            shadow: '2xl',
+            border: '3px solid #4299E1'
         }}>
             <CardBody>
                 <Image
@@ -33,18 +34,32 @@ const ItemCard = ({ name, desc, price, img, id }) => {
                     <Text>
                         {desc}
                     </Text>
-                    <Text  color='blue.600' fontSize='2xl' >
+                    <Text color='blue.600' fontSize='2xl' >
                         {`$${price}`}
                     </Text>
                 </Stack>
             </CardBody>
             <Divider />
             <CardFooter>
-                    <Button alignSelf={'end'} colorScheme='blue' onClick={()=>{
-                        addnewitem(id)
-                    }}>
-                        Add to cart
-                    </Button>
+                <Button alignSelf={'end'} colorScheme='blue' onClick={() => {
+                    addnewitem(id)
+                    toast.success('Item Added To Cart', {
+                        style: {
+                            border: '1px solid #4299E1',
+                            padding: '16px',
+                            color: '#4299E1',
+                        },
+                        iconTheme: {
+                            primary: '#4299E1',
+                            secondary: '#FFFAEE',
+                        },
+                    });
+                }}>
+                    Add to cart
+                </Button>
+                <Toaster
+                    position='bottom-center'
+                />
             </CardFooter>
         </Card>
     )

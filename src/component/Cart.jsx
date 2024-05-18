@@ -1,35 +1,40 @@
-import { Box, Card, VStack,Image, Stack, CardBody, Heading ,Text, CardFooter, HStack, InputGroup, InputLeftAddon, InputRightAddon, Input, Button, Center, CardHeader, Divider} from '@chakra-ui/react'
-import React, { useEffect } from 'react'
+import { Box, Card, VStack, Image, Stack, CardBody, Heading, Text, CardFooter, HStack, InputGroup, InputLeftAddon, InputRightAddon, Input, Button, Center, CardHeader, Divider } from '@chakra-ui/react'
+import React, { useEffect, useRef } from 'react'
 import { useSelector } from 'react-redux'
 import { MdDelete } from "react-icons/md";
+import toast, { Toaster } from 'react-hot-toast'
+import Noitem from './Noitem';
+
+
 import { useDispatch } from 'react-redux';
 import { deletefromcart } from '../Store/Room';
-
+import { incquantity } from '../Store/Room';
+import { decquantity } from '../Store/Room';
 
 
 
 const Cart = () => {
 
-  const data = useSelector((state)=>{
+  const data = useSelector((state) => {
     return state.carteditems
   })
   const cartitem = data.allcartitems;
-  const Shiping = (data.itemprice >= 500 ?  0  : 40)
+  const Shiping = (data.itemprice >= 500 ? 0 : 40)
 
 
   return (
-    <Box w={'full'} display={'inline'} h={'100vh'}>
-      <VStack overflowY={'scroll'} p={'50px'} gap={'20px'} w={'70%'} h={'100vh'} float={'left'} >
+    data.totalquatity ?  <Box w={'full'} display={'inline'} h={'100vh'}>
+    <VStack overflowY={'scroll'} p={'50px'} gap={'20px'} w={'70%'} h={'100vh'} float={'left'} >
       {
-        cartitem.map((i)=>{
-          return <CartCard key={i.id} name={i.title} desc={i.description} img={i.thumbnail} price={i.price} id={i.id}></CartCard>
+        cartitem.map((i) => {
+          return <CartCard key={i.id} name={i.title} desc={i.description} img={i.thumbnail} price={i.price} quantity={i.quantity} id={i.id}></CartCard>
         })
       }
-      </VStack>
-      <Box  display={'grid'} placeContent={'center'} w={'30%'} h={'100vh'} >
+    </VStack>
+    <Box display={'grid'} placeContent={'center'} w={'30%'} h={'100vh'} >
       <Card w={'400px'} h={'350px'}>
         <CardHeader>
-        <Heading>Order Summary</Heading>
+          <Heading>Order Summary</Heading>
         </CardHeader>
         <CardBody>
           <HStack justifyContent={'space-between'}><Text fontSize={'2xl'} fontWeight={'700'}>Item price :</Text><Text fontSize={'2xl'} fontWeight={'700'} >{`$${data.itemprice}`}</Text></HStack>
@@ -41,22 +46,43 @@ const Cart = () => {
           <Button w={'full'} colorScheme='blue'>Place order</Button>
         </CardFooter>
       </Card>
-      </Box>
-
     </Box>
+  </Box> : <Noitem />
   )
 }
 
-const CartCard =({name , desc ,img ,price ,id})=>{
+
+
+
+const CartCard = ({ name, desc, img, price, quantity, id }) => {
   const dispatch = useDispatch()
 
-  const deleteitem = (payload)=>{
+  const deleteitem = (payload) => {
     dispatch(deletefromcart(payload))
   }
 
-  return(
-    <Card w={'100%'} minH={'250px'} 
-      direction={{base:'column', sm:'row'}} overflow={'hidden'}  variant={'outline'}>
+  const increasequantity = (payload) => {
+    dispatch(incquantity(payload));
+  }
+
+  const decreasequantity = (payload) => {
+    if (quant.current.value == 1) {
+      deleteitem(payload);
+    }
+    else {
+      dispatch(decquantity(payload));
+    }
+  }
+
+  const quant = useRef()
+
+  useEffect(() => {
+    quant.current.value = quantity
+  }, [quantity])
+
+  return (
+    <Card w={'100%'} minH={'250px'}
+      direction={{ base: 'column', sm: 'row' }} overflow={'hidden'} variant={'outline'}>
       <Image w={'250px'} h={'250px'} objectFit={'contain'} src={img}></Image>
       <Stack >
         <CardBody >
@@ -67,17 +93,31 @@ const CartCard =({name , desc ,img ,price ,id})=>{
         <CardFooter >
           <HStack>
             <InputGroup>
-              <InputLeftAddon cursor={'pointer'}>-</InputLeftAddon>
-              <Input w={'10px'} placeholder='1'  type='number'></Input>
-              <InputRightAddon cursor={'pointer'}>+</InputRightAddon>
+              <InputLeftAddon onClick={() => decreasequantity(id)} w={'5px'} cursor={'pointer'} >-</InputLeftAddon>
+              <Input w={'45px'} readOnly ref={quant} type='number'></Input>
+              <InputRightAddon onClick={() => increasequantity(id)} cursor={'pointer'}>+</InputRightAddon>
             </InputGroup>
-            <Button fontSize={'24px'} onClick={()=>{
+            <Button fontSize={'24px'} onClick={() => {
               deleteitem(id)
+              toast.success('Item Added To Cart', {
+                style: {
+                  border: '1px solid #4299E1',
+                  padding: '16px',
+                  color: '#4299E1',
+                },
+                iconTheme: {
+                  primary: '#4299E1',
+                  secondary: '#FFFAEE',
+                },
+              });
             }}><MdDelete /></Button>
+            <Toaster
+              position='bottom-center'
+            />
           </HStack>
         </CardFooter>
       </Stack>
-      </Card>
+    </Card>
   )
 }
 
