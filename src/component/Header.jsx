@@ -1,4 +1,4 @@
-import { Box, HStack, Input, Text, InputGroup,InputRightAddon, Heading } from '@chakra-ui/react'
+import { Box, HStack, Input, Text, InputGroup,InputRightAddon, Heading , useMediaQuery} from '@chakra-ui/react'
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { FaCartShopping } from "react-icons/fa6";
@@ -9,13 +9,15 @@ import { useSelector } from 'react-redux';
 
 const Header = () => {
 
+    const [isLargerThan900] = useMediaQuery('(min-width: 900px)')
+
     const total = useSelector((state)=>{
         return state.carteditems.totalquatity
     })
     return (
-        <HStack w={'full'} h={'10vh'} bgColor={'blue.400'} justifyContent={'space-between'}  paddingInline={'50px'} alignItems={'center'} >
-            <Text fontSize={'3xl'} fontWeight={'900'} fontFamily={'serif'}>E-com</Text>
-            <Box>
+        <HStack w={'full'} h={'10vh'} bgColor={'blue.400'} justifyContent={'space-between'}  paddingInline={['20px','50px']} alignItems={'center'} >
+            <Heading fontSize={'3xl'} fontFamily={'serif'}><Link to={'/'}>E-com</Link></Heading>
+            <Box display={isLargerThan900 ? 'unset' : 'none'  }>
             <InputGroup>
                 <Input type='text' placeholder='Seacrh Item' bgColor={'white'} w={'500px'}/>
                 <InputRightAddon><FaSearch /></InputRightAddon>

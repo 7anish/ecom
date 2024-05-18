@@ -23,22 +23,22 @@ const Cart = () => {
 
 
   return (
-    data.totalquatity ?  <Box w={'full'} display={'inline'} h={'100vh'}>
-    <VStack overflowY={'scroll'} p={'50px'} gap={'20px'} w={'70%'} h={'100vh'} float={'left'} >
+    data.totalquatity ?  <Box w={'full'} display={'flex'} flexDirection={['column-reverse','column-reverse','column-reverse','column-reverse','row']} h={['auto','auto','auto','auto','100vh']}>
+    <VStack overflowY={'scroll'} p={'50px'} gap={'20px'} w={['100%','100%','100%','100%','70%']} h={['auto','auto','auto','auto','100vh']} float={'left'} >
       {
         cartitem.map((i) => {
           return <CartCard key={i.id} name={i.title} desc={i.description} img={i.thumbnail} price={i.price} quantity={i.quantity} id={i.id}></CartCard>
         })
       }
     </VStack>
-    <Box display={'grid'} placeContent={'center'} w={'30%'} h={'100vh'} >
-      <Card w={'400px'} h={'350px'}>
+    <Box  p={'30px'} display={'grid'} placeContent={'center'} w={['100%','100%','100%','100%','30%']} h={['80%','80%','80%','80%','100%']} >
+      <Card w={['300px','400px']} h={['auto','350px']}>
         <CardHeader>
           <Heading>Order Summary</Heading>
         </CardHeader>
         <CardBody>
           <HStack justifyContent={'space-between'}><Text fontSize={'2xl'} fontWeight={'700'}>Item price :</Text><Text fontSize={'2xl'} fontWeight={'700'} >{`$${data.itemprice}`}</Text></HStack>
-          <HStack justifyContent={'space-between'}><Text fontSize={'2xl'} fontWeight={'700'}>Shiping Charges :</Text><Text fontSize={'2xl'} fontWeight={'700'}>{`$${Shiping}`}</Text></HStack>
+          <HStack justifyContent={'space-between'}><Text fontSize={'2xl'} fontWeight={'700'}>Shipping  Charges :</Text><Text fontSize={'2xl'} fontWeight={'700'}>{`$${Shiping}`}</Text></HStack>
           <Divider />
           <HStack justifyContent={'space-between'}><Text fontSize={'2xl'} fontWeight={'700'}>Total price :</Text><Text fontSize={'2xl'} fontWeight={'700'}>{`$${data.totalprice}`}</Text></HStack>
         </CardBody>
@@ -83,7 +83,7 @@ const CartCard = ({ name, desc, img, price, quantity, id }) => {
   return (
     <Card w={'100%'} minH={'250px'}
       direction={{ base: 'column', sm: 'row' }} overflow={'hidden'} variant={'outline'}>
-      <Image w={'250px'} h={'250px'} objectFit={'contain'} src={img}></Image>
+      <Image w={['full','250px']} h={['auto','250px']} objectFit={'contain'} src={img}></Image>
       <Stack >
         <CardBody >
           <Heading mb={'10px'} fontSize={'xl'}>{name}</Heading>
