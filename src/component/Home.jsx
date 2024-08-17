@@ -1,7 +1,7 @@
 import { Box, Button, HStack, Text, VStack, ButtonGroup , useMediaQuery } from '@chakra-ui/react'
 import React, { useEffect, useState } from 'react'
 import ItemCard from './ItemCard'
-import data from './JsonFiles/Product.json'
+import data1 from './JsonFiles/Product.json'
 import {
     Drawer,
     DrawerBody,
@@ -12,15 +12,34 @@ import {
     DrawerCloseButton,
 } from '@chakra-ui/react'
 import { useDisclosure } from '@chakra-ui/react'
-import { BsArrow90DegDown } from 'react-icons/bs'
+import { setinitaldata } from '../Store/Room'
+import { useDispatch } from 'react-redux'
+
 
 
 
 const Home = () => {
+    const dispatch = useDispatch()
+    const[data , setdata] = useState(data1);
     const [category, setcategory] = useState('all');
     const { isOpen, onOpen, onClose } = useDisclosure()
     const btnRef = React.useRef()
     const [isLargerThan750] = useMediaQuery('(min-width: 750px)')
+
+    useEffect(()=>{
+
+        const addthedata = (payload) =>{
+            dispatch(setinitaldata(payload))
+        }
+        const fetchdata = async ()=>{
+            const res  = await  fetch('https://dummyjson.com/products');
+            const data =  await res.json()
+            console.log(data.products)
+            setdata(data.products)
+            addthedata(data.products)
+        }
+        // fetchdata();
+    },[])
 
     return (
         <VStack>
@@ -78,7 +97,7 @@ const Home = () => {
 
             <Box display={'grid'} gap={'40px'} gridTemplateColumns={'repeat(auto-fill, minmax(250px, 1fr))'} gridColumn={'3'} w={'full'} h={'fit-content'} paddingInline={'30px'} paddingBlock={'50px'}>
                 {
-                    data.map((item) => {
+                    data[0].products.map((item) => {
                         if (category === 'elec') {
                             if (item.category === 'smartphones' || item.category === 'laptops') {
                                 return <ItemCard key={item.id} name={item.title} price={item.price} img={item.thumbnail} desc={item.description} id={item.id} ></ItemCard>

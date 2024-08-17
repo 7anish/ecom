@@ -12,6 +12,7 @@ const cartitem = createSlice({
     reducers: {
         // 1st reducer
         addtocart(state, action) {
+            console.log(data[0].products)
             const ispresent = state.itemsid.find((id)=>   id == action.payload ) ? 1 : 0;
             if (ispresent) {
                 state.allcartitems.map((item)=>{
@@ -22,8 +23,9 @@ const cartitem = createSlice({
             }
 
             else {
+                console.log(state.itemprice)
                 state.itemsid.push(action.payload)
-                const newitem = data.find((item) => {
+                const newitem = data[0].products.find((item) => {
                     return item.id == action.payload
                 })
                 state.allcartitems.push(newitem);
@@ -90,7 +92,13 @@ const cartitem = createSlice({
                 state.totalquatity = state.allcartitems.reduce((accumulator, currentValue) => accumulator + (currentValue.quantity) , 0)
             }
             suming();
-        }
+        },
+
+
+        // 5th reducecr 
+        setinitaldata(state , action){
+            state.data = action.payload ;
+        },
     }
 })
 
@@ -99,3 +107,4 @@ export const { addtocart } = cartitem.actions;
 export const { deletefromcart } = cartitem.actions;
 export const { incquantity} = cartitem.actions;
 export const {decquantity}=cartitem.actions;
+export const {setinitaldata} = cartitem.actions;

@@ -1,7 +1,6 @@
 import React from 'react'
 import { Image, Card, CardHeader, CardBody, CardFooter, Stack, Text, Button, ButtonGroup, Heading, Divider } from '@chakra-ui/react'
 import { useDispatch } from 'react-redux'
-import cartitem from '../Store/Room'
 import { addtocart } from '../Store/Room'
 import toast, { Toaster } from 'react-hot-toast'
 

@@ -37,10 +37,10 @@ const Cart = () => {
           <Heading>Order Summary</Heading>
         </CardHeader>
         <CardBody>
-          <HStack justifyContent={'space-between'}><Text fontSize={'2xl'} fontWeight={'700'}>Item price :</Text><Text fontSize={'2xl'} fontWeight={'700'} >{`$${data.itemprice}`}</Text></HStack>
+          <HStack justifyContent={'space-between'}><Text fontSize={'2xl'} fontWeight={'700'}>Item price :</Text><Text fontSize={'2xl'} fontWeight={'700'} >{`$${data.itemprice.toFixed(2)}`}</Text></HStack>
           <HStack justifyContent={'space-between'}><Text fontSize={'2xl'} fontWeight={'700'}>Shipping  Charges :</Text><Text fontSize={'2xl'} fontWeight={'700'}>{`$${Shiping}`}</Text></HStack>
           <Divider />
-          <HStack justifyContent={'space-between'}><Text fontSize={'2xl'} fontWeight={'700'}>Total price :</Text><Text fontSize={'2xl'} fontWeight={'700'}>{`$${data.totalprice}`}</Text></HStack>
+          <HStack justifyContent={'space-between'}><Text fontSize={'2xl'} fontWeight={'700'}>Total price :</Text><Text fontSize={'2xl'} fontWeight={'700'}>{`$${data.totalprice.toFixed(2)}`}</Text></HStack>
         </CardBody>
         <CardFooter >
           <Button w={'full'} colorScheme='blue'>Place order</Button>
